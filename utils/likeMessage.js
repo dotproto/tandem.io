@@ -8,6 +8,7 @@ var messages = [
 	"loves this more as a friend than like *that*, sorry",
 	"tried, but just canʼt stop loving this",
 	"would elope with this, if it were human",
+	"is going to elope with this",
 	"enjoys this more than a sack oʼ scissors",
 	"is shy, but wants to tell this they \"like like\" it",
 	"shuns all others before this, at least until the next one",
@@ -67,7 +68,14 @@ var messages = [
 	"made a non-volatile entry into their eternal heart database",
 	"would draw this like one of their french girls",
 	"called this while still on the first date",
-	"touched this inappropriately"
+	"touched this inappropriately",
+	"touched this ... appropriately",
+	"thinks this is great",
+	"thinks this is pretty cool",
+	"likes this or whatever",
+	"is in like with this"
+	"thinks undefined is not a function",
+	"asked this to go steady"
 ];
 
 module.exports = function(){
