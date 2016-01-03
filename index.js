@@ -5,6 +5,7 @@ const PORT = env( 'PORT', { default: 8080, transform: parseInt } );
 const ENV = env( 'NODE_ENV', { default: 'development' } );
 const URL = env( 'TANDEM_URL', { default: 'http://dev.tandem.io:8080' } );
 const SESSION_SECRET = env( 'TANDEM_SESSION_SECRET', { required: true } );
+const TOKEN_SECRET = env('TANDEM_TOKEN_SECRET', { alias: 'TOKEN_SECRET', required: true });
 const MYSQL_URL = env( ['TANDEM_MYSQL_URL', 'CLEARDB_DATABASE_URL'], { required: true } );
 const REDIS_URL = env( ['TANDEM_REDIS_URL', 'REDISTOGO_URL'], { default: 'redis://localhost' } );
 const SOUNDCLOUD_APP_ID = env( 'TANDEM_SOUNDCLOUD_APP_ID', { required: true } );
