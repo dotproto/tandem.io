@@ -1,19 +1,25 @@
-const PORT = process.env.PORT || 8080;
-const SESSION_SECRET = process.env.TANDEM_SESSION_SECRET;
-const SOUNDCLOUD_APP_ID = process.env.TANDEM_SOUNDCLOUD_APP_ID;
-const SOUNDCLOUD_APP_SECRET = process.env.TANDEM_SOUNDCLOUD_APP_SECRET;
-const YOUTUBE_APP_ID = process.env.TANDEM_YOUTUBE_APP_ID;
-const YOUTUBE_APP_SECRET = process.env.TANDEM_YOUTUBE_APP_SECRET;
-const YOUTUBE_API_KEY = process.env.TANDEM_YOUTUBE_API_KEY;
-const MYSQL_URL = process.env.TANDEM_MYSQL_URL || process.env.CLEARDB_DATABASE_URL;
-const REDIS_URL = process.env.TANDEM_REDIS_URL || process.env.REDISTOGO_URL || 'redis://localhost';
-const URL = process.env.TANDEM_URL || 'http://dev.tandem.io:8080';
-const ENV = process.env.NODE_ENV || 'development';
+// Environment variables
+const env = require('./utils/environment');
+
+const PORT = env( 'PORT', { default: 8080, transform: parseInt } );
+const ENV = env( 'NODE_ENV', { default: 'development' } );
+const URL = env( 'TANDEM_URL', { default: 'http://dev.tandem.io:8080' } );
+const SESSION_SECRET = env( 'TANDEM_SESSION_SECRET', { required: true } );
+const MYSQL_URL = env( ['TANDEM_MYSQL_URL', 'CLEARDB_DATABASE_URL'], { required: true } );
+const REDIS_URL = env( ['TANDEM_REDIS_URL', 'REDISTOGO_URL'], { default: 'redis://localhost' } );
+const SOUNDCLOUD_APP_ID = env( 'TANDEM_SOUNDCLOUD_APP_ID', { required: true } );
+const SOUNDCLOUD_APP_SECRET = env( 'TANDEM_SOUNDCLOUD_APP_SECRET', { required: true } );
+const YOUTUBE_APP_ID = env( 'TANDEM_YOUTUBE_APP_ID', { required: true } );
+const YOUTUBE_APP_SECRET = env( 'TANDEM_YOUTUBE_APP_SECRET', { required: true } );
+const YOUTUBE_API_KEY = env( 'TANDEM_YOUTUBE_API_KEY', { required: true } );
+
+// Consts
 const SOUNDCLOUD_API_BASE_URL = 'https://api.soundcloud.com';
 const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 const VIEWS_PATH = __dirname +'/views';
 const NO_OP = function(){};
 
+// General 3rd party dependencies
 var http = require('http');
 var socket_io = require('socket.io');
 var async = require('async');
@@ -21,17 +27,18 @@ var _ = require('underscore');
 var url = require('url');
 var request = require('request');
 var express = require('express');
+var expose = require('express-expose');
+
+// Server
 var server = express();
-var expose = require('express-expose')
 expose(server);
 var http_server = http.createServer( server );
 var io = socket_io.listen( http_server );
 
 var generateAuthToken = require('./utils/generateAuthToken.js');
-
 var Room = require('./models/room.js')({ io: io });
 
-// parse my own connection details because waterline is broken
+// Parse the connection details because waterline is broken
 var parsed_mysql_connection_url = url.parse( MYSQL_URL );
 
 // Database
